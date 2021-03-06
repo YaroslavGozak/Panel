@@ -3,10 +3,10 @@ const int LED2_PIN = 5;
 const int LED3_PIN = 14;
 const int LED4_PIN = 4;
 
-//const int RELE_BUTTON_PIN = 13;
+const int RELE_BUTTON_PIN = 13;
 //const int CHECK_BUTTON_PIN = 8;
 
-//bool currentReleButtonState;
+bool currentReleButtonState;
 //bool currentCheckButtonState;
 
 // the setup function runs once when you press reset or power the board
@@ -14,33 +14,40 @@ void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(LED1_PIN, OUTPUT);
-   pinMode(LED2_PIN, OUTPUT);
-   pinMode(LED3_PIN, OUTPUT);
-   pinMode(LED4_PIN, OUTPUT);
+  pinMode(LED2_PIN, OUTPUT);
+  pinMode(LED3_PIN, OUTPUT);
+  pinMode(LED4_PIN, OUTPUT);
 
-   //pinMode(RELE_BUTTON_PIN, INPUT);
+  pinMode(RELE_BUTTON_PIN, INPUT_PULLUP);
    //pinMode(CHECK_BUTTON_PIN, INPUT);
 
-   //currentReleButtonState = digitalRead(RELE_BUTTON_PIN);
+  currentReleButtonState = digitalRead(RELE_BUTTON_PIN);
    //currentCheckButtonState = digitalRead(CHECK_BUTTON_PIN);
-
-   blinkAll();
+  if(currentReleButtonState){
+    led2On();
+  }
+  Serial.begin(9600);
+  Serial.write("Setup complete\n");
 }
 
 // the loop function runs over and over again forever
 void loop() {
-  /*if(isReleButtonPressedUp()){
-    Serial.println("Rele pressed");
-  }*/
+  if(isReleButtonPressedUp()){
+    led1On();
+  }
+  else{
+    led1Off();
+  }
   blinkAll();
 }
 
-/*bool isReleButtonPressedUp(){
-  bool newReleButtonState = digitalRead(RELE_BUTTON_PIN);
+bool isReleButtonPressedUp(){
+  int newReleButtonState = digitalRead(RELE_BUTTON_PIN);
+  Serial.write("newReleButtonState "); Serial.print(newReleButtonState); Serial.write("\n");
   bool lastReleButtonState = currentReleButtonState;
   currentReleButtonState = newReleButtonState;
   return currentReleButtonState && !lastReleButtonState;
-}*/
+}
 
 /*bool isCheckButtonPressedUp(){
   bool newCheckButtonState = digitalRead(RELE_BUTTON_PIN);
@@ -49,15 +56,15 @@ void loop() {
   return !currentCheckButtonState && lastCheckButtonState;
 }*/
 void blinkAll(){
-  led1On();
-  led2On();
+  //led1On();
+  //led2On();
   led3On();
   led4On();
 
   delay(500);
 
-  led1Off();
-  led2Off();
+  //led1Off();
+  //led2Off();
   led3Off();
   led4Off();
 
