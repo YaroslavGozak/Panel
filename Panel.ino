@@ -12,7 +12,7 @@ int lastPressedButtonIndex = -1;
 bool currentReleButtonState;
 bool currentCheckButtonState;
 bool isDone;
-bool isLockClosed;
+bool isLockClosed = true;
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -151,22 +151,22 @@ void doAction(int inputAction){
   ledOn(LED_PINS[ledIndex]);
   if(inputAction == 3){
     isDone = true;
-    delay(1000);
+    delay(500);
     makeFinishSound();
-    delay(100);
-    openLock();
-    delay(2000);
-    closeLock();
+    for(;;){
+      toggleLock();
+      delay(2000);
+    }
   }
 }
 
 void openLock(){
-  digitalWrite(RELE_PIN, HIGH);
+  digitalWrite(RELE_PIN, LOW);
   isLockClosed = false;
 }
 
 void closeLock(){
-  digitalWrite(RELE_PIN, LOW);
+  digitalWrite(RELE_PIN, HIGH);
   isLockClosed = true;
 }
 
